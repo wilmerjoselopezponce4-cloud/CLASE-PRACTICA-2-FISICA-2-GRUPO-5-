@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Grupo 5 Games, galería interactiva de videojuegos creada por estudiantes de Programación Web Avanzada de la Universidad Bolivariana del Ecuador.">
+  <meta name="theme-color" content="#ffffff">
+  <title>Grupo 5 Games | Clase Práctica 2</title>
+  <style>
+    :root{--bg:#040b13;--panel:#071421;--panel2:#0b1b2b;--line:#20405b;--text:#f2f8ff;--muted:#a9bcd2;--blue:#008bff;--cyan:#1cb7ff;--glow:#00a8ff;--max:1540px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:72px}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#0c2540 0,#040b13 660px);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;overflow-x:hidden}button,input{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}img{max-width:100%;display:block}svg{width:1.3em;height:1.3em;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #7ad5ff;outline-offset:3px}::selection{background:#007ee8;color:#fff}
+    .container{width:min(calc(100% - 108px),var(--max));margin:0 auto}
+    .utility{height:43px;background:#03090f;border-bottom:1px solid #193249;position:relative;z-index:30}.utility .container{height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}.utility-left,.utility-right{display:flex;align-items:center;gap:27px}.utility a{font-size:12px;font-weight:800;letter-spacing:.055em;white-space:nowrap;transition:color .2s}.utility a:hover,.utility a:focus-visible{color:var(--cyan)}.utility .mini-icon{color:var(--cyan);display:flex;font-size:22px;margin-right:3px}.utility .separator{height:21px;width:1px;background:#2b536f;margin-left:-14px}.utility-right a{display:flex;align-items:center;gap:8px}.utility-right svg{color:var(--cyan)}.utility .join{padding:7px 16px;background:#007dff;border:1px solid #39b5ff;border-radius:5px;box-shadow:0 0 13px #006ad066;color:white}
+    .hero{height:425px;min-height:425px;position:relative;background:#061521;overflow:hidden;border-bottom:1px solid #113754}.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .55s ease,visibility .55s ease;pointer-events:none}.slide.active{opacity:1;visibility:visible}.slide img{height:100%;width:100%;object-fit:cover;object-position:center}.slide::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(1,6,13,.20),rgba(1,6,12,.62) 35%,rgba(1,7,16,.64) 63%,rgba(1,5,11,.21)),linear-gradient(0deg,#030c15 0%,transparent 31%,rgba(2,7,12,.45) 100%)}
+    .main-nav{position:relative;z-index:6;display:flex;align-items:center;gap:20px;height:100px}.brand{flex:0 0 auto;display:flex;align-items:center;gap:14px;max-width:490px}.brand svg{color:var(--cyan);width:78px;height:78px;filter:drop-shadow(0 0 9px #008bff)}.brand-name{font-size:clamp(22px,2.3vw,35px);font-style:italic;letter-spacing:.012em;font-weight:1000;line-height:1.05;text-transform:uppercase;white-space:nowrap;text-shadow:2px 3px #001624,0 0 14px #004a85}.brand-name span{color:var(--cyan)}.brand-sub{font-weight:650;font-size:12px;color:#e0eafa;white-space:nowrap}.primary-links{display:flex;gap:3px;align-items:center;margin-left:auto;min-width:0}.primary-links>a,.nav-filter{padding:12px 11px;font-size:14px;font-weight:750;background:none;border:0;color:white;white-space:nowrap}.primary-links a:hover,.nav-filter:hover{color:#50c9ff}.primary-links>a.active{color:#aee6ff;border-bottom:3px solid var(--cyan)}.dropdown-wrap{position:relative}.nav-filter{display:flex;gap:7px;align-items:center}.nav-filter svg{width:15px;height:15px;color:#00a7ff}.dropdown{display:none;position:absolute;top:calc(100% + 7px);left:0;min-width:210px;padding:8px;background:#081725;border:1px solid #26638e;border-radius:10px;box-shadow:0 14px 28px #0009;z-index:12}.dropdown.open{display:grid}.dropdown button{background:transparent;color:#d9edff;text-align:left;border:0;border-radius:5px;padding:9px 12px}.dropdown button:hover{background:#0d3653;color:white}.search{display:flex;align-items:center;margin-left:9px;max-width:360px;min-width:235px;width:24%;height:42px;padding:4px 5px 4px 14px;background:#253143ed;border:1px solid #61758c;border-radius:20px;box-shadow:0 5px 15px #0009}.search>svg{flex:0 0 auto;color:#bac9db}.search input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:white;padding:0 9px;font-size:12px}.search input::placeholder{color:#bcc8d9}.search button{background:#047ff8;color:white;height:32px;width:41px;border:0;border-radius:12px;display:grid;place-items:center;box-shadow:0 0 14px #008dff55;flex-shrink:0}.mobile-toggle{display:none;background:#092942;border:1px solid #2a688f;border-radius:8px;padding:9px;color:white}
+    .hero-content{position:relative;z-index:4;height:calc(100% - 100px);display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:0 100px 33px;pointer-events:none}.hero-content h1{font-size:clamp(41px,4.35vw,68px);line-height:.90;margin:0 0 14px;font-weight:1000;letter-spacing:-.055em;font-style:italic;text-transform:uppercase;text-shadow:3px 5px 3px #020711,0 0 18px #041723}.hero-content h1 small{display:block;font-size:.83em;letter-spacing:-.045em}.hero-content h1 strong{display:block;font-size:1.13em;color:#09a8ff;filter:drop-shadow(0 1px 8px #007cffbb);text-shadow:3px 5px 1px #023356}.hero-tagline{font-size:13px;letter-spacing:.22em;font-weight:650;margin:0 0 13px;text-shadow:0 2px 4px #000}.hero-tagline b{color:var(--cyan);padding:0 9px}.built{margin:0;font-weight:850;font-size:15px;text-shadow:0 2px 6px #000}.built svg{color:#00a5ff;vertical-align:middle;margin-right:6px}.hero-names{font-size:11px;font-weight:650;letter-spacing:.025em;text-shadow:0 2px 6px #000;margin:5px 0 0}.hero-names span{opacity:.5;padding:0 9px}.carousel-arrow{position:absolute;z-index:8;top:50%;transform:translateY(-1%);height:52px;width:52px;color:#fff;background:#010c1999;border:2px solid #8da5bb;border-radius:50%;display:grid;place-items:center;transition:background .2s,border-color .2s}.carousel-arrow:hover{background:#006bb5cc;border-color:#e2f4ff}.carousel-arrow.prev{left:max(16px,calc((100vw - 1650px)/2))}.carousel-arrow.next{right:max(16px,calc((100vw - 1650px)/2))}.carousel-arrow svg{height:25px;width:25px}.carousel-dots{position:absolute;z-index:10;left:50%;transform:translateX(-50%);bottom:13px;display:flex;gap:12px}.carousel-dots button{border:0;background:#638099;width:12px;height:12px;border-radius:50%;padding:0;box-shadow:0 1px 6px #0018}.carousel-dots button.current{background:#009eff;box-shadow:0 0 11px #009eff}
+    main{padding-bottom:0}.section{padding-top:27px}.section-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}.section-icon{color:#00adff;width:35px;height:35px;filter:drop-shadow(0 0 6px #007ddd)}.section-head h2{font-size:25px;line-height:1.2;letter-spacing:-.03em;margin:0;font-weight:950;white-space:nowrap;text-transform:uppercase;text-shadow:0 0 7px #1b6bbc5c}.section-head h2 span{color:#e5f0ff}.section-head .rule{height:1px;background:linear-gradient(90deg,#1d4d72,transparent);flex:1;min-width:15px}.section-head>a,.text-link{border:0;background:none;color:#08b0ff;display:inline-flex;gap:9px;align-items:center;font-size:13px;white-space:nowrap;font-weight:650}.section-head>a:hover,.text-link:hover{color:white}.section-head>a svg{height:17px;width:17px}.filters{display:flex;gap:8px;overflow-x:auto;padding:2px 0 16px;scrollbar-width:thin}.filter-pill{background:#0d2336;color:#bddef8;border:1px solid #174d70;padding:6px 12px;border-radius:40px;white-space:nowrap;font-size:12px;font-weight:700;transition:.2s}.filter-pill:hover,.filter-pill.selected{background:#046cb8;border-color:#10adff;color:white}.counter{margin:0 0 13px;font-size:12px;color:#8ca8bc;min-height:18px}
+    .cards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.game-card{min-width:0;overflow:hidden;border:1px solid #234c70;border-radius:10px;background:linear-gradient(180deg,#0b1c2c,#06111e);box-shadow:0 2px 11px #0008;display:flex;flex-direction:column;transition:transform .2s,border-color .2s}.game-card:hover{transform:translateY(-4px);border-color:#0984da}.game-card[hidden]{display:none!important}.game-image{position:relative;overflow:hidden}.game-image img{height:144px;width:100%;object-fit:cover;transition:transform .3s}.game-card:hover .game-image img{transform:scale(1.035)}.genre{position:absolute;top:9px;left:9px;padding:4px 11px;background:#0079d9;color:white;border-radius:999px;font-size:11px;font-weight:750;box-shadow:0 3px 8px #0015}.favorite{position:absolute;top:8px;right:9px;width:31px;height:31px;background:#021b31cc;color:#fff;border:1px solid #ffffff50;border-radius:50%;display:grid;place-items:center;z-index:2}.favorite svg{width:16px;height:16px}.favorite[aria-pressed="true"]{color:#ff6aa8;border-color:#ff6aa8;background:#3b1232f2}.favorite[aria-pressed="true"] svg{fill:currentColor}.game-info{padding:12px 12px 13px;display:flex;flex-direction:column;flex:1}.game-info h3{font-size:16px;line-height:1.25;margin:0 0 7px;font-weight:850}.game-info p{font-size:13px;line-height:1.47;color:#a9bcd0;margin:0 0 10px;min-height:58px}.game-info button{margin-top:auto;width:100%;background:linear-gradient(110deg,#0074ef,#008dff);border:1px solid #37b3ff;border-radius:7px;color:white;font-size:13px;font-weight:850;min-height:36px;display:flex;gap:9px;align-items:center;justify-content:center;box-shadow:0 0 10px #0089ff44;transition:filter .2s}.game-info button:hover{filter:brightness(1.19)}.game-info button svg{width:16px;height:16px}.empty{margin:15px 0;background:#0b2030;border:1px dashed #41759e;border-radius:12px;padding:22px;color:#c7d8e6;text-align:center}
+    .team-section{padding-top:31px}.recommend-bar{border-top:1px solid #234765;border-bottom:1px solid #234765;background:linear-gradient(90deg,#061626d9,#03111eda),url('assets/franja-gamer.webp') center /cover;padding:14px 0}.feature-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.feature{display:flex;align-items:center;gap:13px;background:#030c169c;border-radius:999px;padding:11px 16px;min-width:0}.feature svg{color:#00a7ff;height:33px;width:33px;flex-shrink:0}.feature strong{font-size:13px;display:block}.feature span{display:block;font-size:11px;color:#bbcadd}.recommend-lead{padding-bottom:16px;color:#bed2e7;margin:0;font-size:13px}.members{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;margin:17px auto 27px}.member{padding:13px 12px;border:1px solid #214461;border-radius:9px;background:#0a1928;text-align:center}.member .avatar{height:34px;width:34px;border-radius:50%;background:linear-gradient(135deg,#004e91,#00b4f8);display:grid;place-items:center;color:white;font-weight:900;margin:0 auto 7px}.member b{display:block;font-size:12px}.member span{font-size:11px;color:#90b5cc}.footer{background:#030b13;border-top:1px solid #214763;padding:19px 0 22px}.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:18px}.footer-brand{display:flex;align-items:center;gap:8px;flex:0 0 auto}.footer-brand svg{height:43px;width:43px;color:#00a9ff}.footer-brand strong{display:block;font-size:17px;font-style:italic}.footer-brand strong span{color:#0bb9ff}.footer-brand small{font-size:10px;color:#95aabc}.footer-copy{text-align:center;font-size:12px;color:#d7e4ef}.footer-copy small{display:block;font-size:11px;color:#91a5ba;margin-top:3px}.footer-links{display:flex;gap:14px;color:#11aaff;font-size:12px;font-weight:750;white-space:nowrap}
+    .modal{position:fixed;inset:0;background:#000c;z-index:70;display:none;align-items:center;justify-content:center;padding:18px}.modal.open{display:flex}.modal-card{width:min(100%,520px);background:#091a29;border:1px solid #2879ae;border-radius:15px;box-shadow:0 14px 60px #000a;overflow:hidden;position:relative}.modal-card>img{width:100%;max-height:245px;object-fit:cover}.modal-body{padding:20px 23px 23px}.modal h2{font-size:25px;margin:0 0 7px}.modal .modal-genre{color:#43c0ff;margin:0 0 11px;font-size:13px;font-weight:850}.modal p{color:#d1dfec;margin:0 0 15px}.modal-note{border-left:3px solid #0ea9f5;background:#102b3d;padding:10px 12px;font-size:12px!important}.modal-close{position:absolute;right:13px;top:12px;border:1px solid #97bfda;color:#fff;border-radius:50%;height:35px;width:35px;background:#061527d9;display:grid;place-items:center}.modal-action{background:#0089ed;color:white;border:0;padding:10px 15px;border-radius:7px;font-weight:750}.toast{position:fixed;bottom:20px;right:20px;max-width:340px;background:#103d5b;color:white;border:1px solid #43bfff;box-shadow:0 5px 20px #0009;padding:11px 15px;border-radius:9px;z-index:90;display:none}.toast.shown{display:block}.sr-only{position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden;white-space:nowrap}
+    @media(max-width:1330px){.container{width:min(calc(100% - 50px),var(--max))}.brand svg{width:60px;height:60px}.brand-name{font-size:25px}.brand-sub{font-size:10px}.primary-links>a,.nav-filter{padding:11px 7px;font-size:12px}.search{min-width:190px;width:21%}.cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.game-image img{height:185px}.game-info p{min-height:0}}
+    @media(max-width:920px){.utility-left{gap:12px}.utility-left a:nth-of-type(n+3){display:none}.utility-right{gap:12px}.utility-right a:nth-child(2){display:none}.main-nav{height:81px;flex-wrap:wrap;justify-content:space-between}.search{order:2;min-width:200px;width:29%;margin-left:0}.mobile-toggle{display:grid;place-items:center;order:3}.primary-links{display:none;position:absolute;top:77px;left:0;right:0;padding:11px;background:#071729;border:1px solid #225376;border-radius:10px;box-shadow:0 16px 35px #000d}.primary-links.open{display:flex;flex-direction:column;align-items:stretch}.primary-links>a,.nav-filter{text-align:left;font-size:14px;padding:10px}.dropdown{position:relative;top:0;box-shadow:none;margin:4px 0}.hero{height:425px}.hero-content{height:calc(100% - 81px);padding:0 75px 25px}.hero-content h1{font-size:55px}.feature-row{grid-template-columns:repeat(2,minmax(0,1fr))}.members{grid-template-columns:repeat(3,1fr)}.footer-inner{flex-direction:column}}
+    @media(max-width:620px){.container{width:calc(100% - 26px)}.utility{height:38px}.utility-left a:nth-of-type(n+2){display:none}.utility-right .join{padding:5px 9px}.utility .mini-icon{font-size:19px}.main-nav{height:72px;gap:7px}.brand{gap:7px}.brand svg{height:40px;width:40px}.brand-name{font-size:17px}.brand-sub{font-size:8px}.search{position:absolute;top:78px;left:0;width:100%;max-width:none;height:38px;z-index:5}.search button{height:29px}.mobile-toggle{padding:6px}.primary-links{top:72px}.hero{height:500px}.hero-content{padding:85px 47px 24px;height:100%}.hero-content h1{font-size:clamp(34px,10vw,58px)}.hero-tagline{font-size:9px;letter-spacing:.08em;white-space:nowrap}.hero-tagline b{padding:0 3px}.built{font-size:12px}.hero-names{font-size:10px;max-width:280px}.hero-names span{padding:0 3px}.slide img{object-position:center}.carousel-arrow{height:37px;width:37px;top:56%}.carousel-arrow svg{height:21px;width:21px}.carousel-arrow.prev{left:7px}.carousel-arrow.next{right:7px}.section-head{gap:7px}.section-head h2{font-size:18px}.section-icon{width:25px;height:25px}.section-head>a{font-size:11px}.section-head .rule{min-width:5px}.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.game-image img{height:140px}.game-info{padding:9px}.game-info h3{font-size:13px}.game-info p{font-size:11px}.game-info button{font-size:12px}.genre{font-size:9px;padding:3px 7px}.favorite{width:28px;height:28px}.feature-row{gap:6px}.feature{border-radius:9px;padding:10px;gap:7px}.feature svg{height:26px;width:26px}.feature strong{font-size:11px}.feature span{font-size:9px}.members{grid-template-columns:repeat(2,1fr)}.team-section .section-head{flex-wrap:wrap}.team-section .section-head .rule{display:none}.team-section .section-head>a{margin-left:auto}.footer-links{gap:9px}.footer-copy{font-size:10px}}
+    @media(max-width:350px){.cards{grid-template-columns:1fr}.game-image img{height:190px}.brand-name{font-size:15px}.feature-row{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+
+    /* Versión con fondo blanco: el encabezado gamer conserva su contraste oscuro. */
+    body{background:#ffffff;color:#1d3044}
+    main{background:#ffffff}
+    .utility,.hero{color:#ffffff}
+    .section-head h2{color:#23364c;text-shadow:none}
+    .section-head h2 span{color:#087ecb}
+    .section-head .rule{background:linear-gradient(90deg,#bfd3e5,transparent)}
+    .section-head>a,.text-link{color:#0075bd}
+    .section-head>a:hover,.text-link:hover{color:#004c82}
+    .filter-pill{background:#f1f7fc;color:#285578;border:1px solid #d2e4f2}
+    .filter-pill:hover,.filter-pill.selected{background:#007cdc;color:#fff;border-color:#007cdc}
+    .counter{color:#60778c}
+    .game-card{background:#fff;border:1px solid #dbe5ee;box-shadow:0 5px 16px #123a6017}
+    .game-card:hover{border-color:#45aaf1;box-shadow:0 9px 24px #1266a42e}
+    .game-info h3{color:#21364c}
+    .game-info p{color:#5b7187}
+    .empty{background:#f5faff;border:1px dashed #aac7df;color:#325472}
+    .recommend-bar{background:#f7fafe;border-top:1px solid #dbe8f2;border-bottom:1px solid #dbe8f2}
+    .feature{background:#fff;border:1px solid #e1eaf2;border-radius:16px;box-shadow:0 3px 12px #003d6b0b}
+    .feature strong{color:#203950}
+    .feature span{color:#647a8d}
+    .recommend-lead{color:#586f84}
+    .member{background:#fff;border:1px solid #dbe7f1;box-shadow:0 3px 13px #16497512}
+    .member b{color:#243d54}
+    .member span{color:#657e95}
+    .members{margin-bottom:46px}
+    .modal-card{background:#fff;border-color:#b0d7ef}
+    .modal h2{color:#1b334a}
+    .modal p{color:#536c82}
+    .modal .modal-genre{color:#007dc5}
+    .modal-note{background:#f0f8ff;color:#405b72!important}
+    .repository-actions{display:flex;align-items:center;gap:12px;margin:1px 0 8px;flex-wrap:wrap}
+    .repository-action{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:#0079da;color:#fff;border:1px solid #078be9;padding:11px 19px;border-radius:9px;font-weight:800;font-size:13px;box-shadow:0 5px 15px #057fc52c;transition:background .18s,transform .18s}
+    .repository-action:hover{background:#0061b2;color:#fff;transform:translateY(-2px)}
+    .repository-action svg{width:18px;height:18px;flex:none}
+  </style>
+</head>
+<body>
+  <svg aria-hidden="true" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="ic-pad" viewBox="0 0 24 24"><path d="M6.5 8.5h11a4 4 0 0 1 3.8 3l1.2 5a2.7 2.7 0 0 1-4.4 2.5l-2.8-2.4H8.7L6 19a2.7 2.7 0 0 1-4.4-2.5l1.2-5a4 4 0 0 1 3.7-3Z"/><path d="M7 11.5v4m-2-2h4"/><circle cx="16" cy="12.5" r=".8" fill="currentColor" stroke="none"/><circle cx="18.5" cy="14.5" r=".8" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="ic-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="ic-chevron-left" viewBox="0 0 24 24"><path d="m15 19-7-7 7-7"/></symbol>
+    <symbol id="ic-chevron-right" viewBox="0 0 24 24"><path d="m9 19 7-7-7-7"/></symbol>
+    <symbol id="ic-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="ic-heart" viewBox="0 0 24 24"><path d="M20.5 8.5c0 4.7-8.5 10.4-8.5 10.4S3.5 13.2 3.5 8.5A4.5 4.5 0 0 1 12 6.7a4.5 4.5 0 0 1 8.5 1.8Z"/></symbol>
+    <symbol id="ic-star" viewBox="0 0 24 24"><path d="m12 2 3.1 6.3L22 9.3l-5 4.9 1.2 6.9L12 17.8l-6.2 3.3L7 14.2l-5-4.9 6.9-1Z"/></symbol>
+    <symbol id="ic-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2.5 20v-2a5 5 0 0 1 5-5h3a5 5 0 0 1 5 5v2M16 14a4.5 4.5 0 0 1 5.5 4.4V20"/></symbol>
+    <symbol id="ic-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4"/></symbol>
+    <symbol id="ic-trophy" viewBox="0 0 24 24"><path d="M7 3h10v7a5 5 0 0 1-10 0Zm0 2H3v4a4 4 0 0 0 4 4m10-8h4v4a4 4 0 0 1-4 4M12 15v5m-4 1h8"/></symbol>
+    <symbol id="ic-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="ic-close" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"/></symbol>
+    <symbol id="ic-user" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/></symbol>
+    <symbol id="ic-external" viewBox="0 0 24 24"><path d="M13 5h6v6M19 5l-9 9"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></symbol>
+  </svg>
+
+  <header>
+    <div class="utility">
+      <div class="container">
+        <div class="utility-left">
+          <a href="#inicio" class="mini-icon" aria-label="Grupo 5 Games, inicio"><svg><use href="#ic-pad"></use></svg></a><div class="separator"></div>
+          <a href="#inicio">INICIO</a><a href="#juegos">CATEGORÍAS</a><a href="#equipo">NOVEDADES</a><a href="#juegos">VIDEOJUEGOS</a><a href="#equipo">AYUDA</a><a href="https://github.com/wilmerjoselopezponce4-cloud/CLASE-PRACTICA-2-FISICA-2-GRUPO-5-" target="_blank" rel="noopener noreferrer" aria-label="Abrir repositorio del Grupo 5 en GitHub (pestaña nueva)">GITHUB ↗</a>
+        </div>
+        <div class="utility-right">
+          <a href="#juegos" id="goFavorites"><svg><use href="#ic-heart"></use></svg> MI LISTA</a>
+          <a href="#equipo"><svg><use href="#ic-user"></use></svg> GRUPO 5</a>
+          <a class="join" href="#equipo">CONOCER AL EQUIPO</a>
+        </div>
+      </div>
+    </div>
+    <section class="hero" id="inicio" aria-label="Carrusel de imágenes de videojuegos">
+      <div class="slide active" aria-hidden="false"><img src="assets/portada-1.webp" alt="Guerreros y personajes de fantasía en un paisaje de videojuegos" fetchpriority="high"></div>
+      <div class="slide" aria-hidden="true"><img src="assets/portada-2.webp" alt="Escenario fantástico con personajes y luz nocturna"></div>
+      <div class="slide" aria-hidden="true"><img src="assets/portada-3.webp" alt="Personajes de acción y aventura en una composición de ciencia ficción"></div>
+      <div class="slide" aria-hidden="true"><img src="assets/portada-4.webp" alt="Galería visual gamer del Grupo 5: composición de videojuegos 1"></div>
+      <div class="slide" aria-hidden="true"><img src="assets/portada-5.webp" alt="Galería visual gamer del Grupo 5: composición de videojuegos 2"></div>
+      <div class="slide" aria-hidden="true"><img src="assets/portada-6.webp" alt="Galería visual gamer del Grupo 5: composición de videojuegos 3"></div>
+      <div class="slide" aria-hidden="true"><img src="assets/portada-7.webp" alt="Galería visual gamer del Grupo 5: composición de videojuegos 4"></div>
+      <div class="slide" aria-hidden="true"><img src="assets/portada-8.webp" alt="Galería visual gamer del Grupo 5: composición de videojuegos 5"></div>
+      <div class="slide" aria-hidden="true"><img src="assets/portada-9.webp" alt="Galería visual gamer del Grupo 5: composición de videojuegos 6"></div>
+      <nav class="main-nav container" aria-label="Navegación principal">
+        <a class="brand" href="#inicio" aria-label="Grupo 5 Games, volver al inicio">
+          <svg><use href="#ic-pad"></use></svg>
+          <span><span class="brand-name">GRUPO <span>5 GAMES</span></span><span class="brand-sub" style="display:block">Proyecto académico de Programación Web</span></span>
+        </a>
+        <div class="primary-links" id="primaryLinks">
+          <a href="#inicio" class="active">Inicio</a>
+          <div class="dropdown-wrap">
+            <button class="nav-filter" id="categoryMenu" type="button" aria-expanded="false" aria-controls="dropdown">Categorías <svg><use href="#ic-chevron-down"></use></svg></button>
+            <div class="dropdown" id="dropdown" aria-label="Categorías de videojuegos">
+              <button type="button" data-filter="Todos">Todos los juegos</button>
+              <button type="button" data-filter="Acción">Acción</button>
+              <button type="button" data-filter="Disparos">Disparos</button>
+              <button type="button" data-filter="Ciencia ficción">Ciencia ficción</button>
+              <button type="button" data-filter="Carreras">Carreras</button>
+              <button type="button" data-filter="Terror">Terror</button>
+              <button type="button" data-filter="Aventura">Aventura</button>
+            </div>
+          </div>
+          <a href="#juegos">Top Juegos</a><a href="#recomendados">Recomendados</a><a href="#equipo">Equipo</a>
+        </div>
+        <form class="search" id="searchForm" role="search">
+          <svg><use href="#ic-search"></use></svg>
+          <label for="searchInput" class="sr-only">Buscar un videojuego</label>
+          <input id="searchInput" type="search" placeholder="¿Qué videojuego buscas?" autocomplete="off">
+          <button type="submit" aria-label="Buscar"><svg><use href="#ic-search"></use></svg></button>
+        </form>
+        <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Abrir navegación" aria-expanded="false"><svg><use href="#ic-menu"></use></svg></button>
+      </nav>
+      <div class="hero-content container" aria-live="polite" aria-atomic="true">
+        <h1 id="slideTitle">VIVE <small>EL MUNDO</small><strong>GAMER</strong></h1>
+        <p class="hero-tagline" id="slideTagline">DESCUBRE <b>·</b> EXPLORA <b>·</b> JUEGA <b>·</b> DISFRUTA</p>
+        <p class="built"><svg><use href="#ic-users"></use></svg> Desarrollado por el Grupo 5</p>
+        <p class="hero-names">Jorge Toapanta <span>|</span> Jhoely Davila <span>|</span> Jhonatan Chavez <span>|</span> Wilmer Adriano <span>|</span> Wilmer Lopez</p>
+      </div>
+      <button type="button" class="carousel-arrow prev" id="prevSlide" aria-label="Imagen anterior"><svg><use href="#ic-chevron-left"></use></svg></button>
+      <button type="button" class="carousel-arrow next" id="nextSlide" aria-label="Imagen siguiente"><svg><use href="#ic-chevron-right"></use></svg></button>
+      <div class="carousel-dots" aria-label="Seleccionar imagen del carrusel">
+        <button class="current" type="button" data-slide="0" aria-label="Mostrar imagen 1" aria-current="true"></button>
+        <button type="button" data-slide="1" aria-label="Mostrar imagen 2" aria-current="false"></button>
+        <button type="button" data-slide="2" aria-label="Mostrar imagen 3" aria-current="false"></button>
+        <button type="button" data-slide="3" aria-label="Mostrar imagen 4" aria-current="false"></button>
+        <button type="button" data-slide="4" aria-label="Mostrar imagen 5" aria-current="false"></button>
+        <button type="button" data-slide="5" aria-label="Mostrar imagen 6" aria-current="false"></button>
+        <button type="button" data-slide="6" aria-label="Mostrar imagen 7" aria-current="false"></button>
+        <button type="button" data-slide="7" aria-label="Mostrar imagen 8" aria-current="false"></button>
+        <button type="button" data-slide="8" aria-label="Mostrar imagen 9" aria-current="false"></button>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section class="section container" id="juegos" aria-labelledby="juegosTitle">
+      <div class="section-head">
+        <svg class="section-icon"><use href="#ic-pad"></use></svg><h2 id="juegosTitle">TOP <span>JUEGOS</span></h2><span class="rule"></span>
+        <a href="#juegos" id="seeAll">Ver todos los juegos <svg><use href="#ic-chevron-right"></use></svg></a>
+      </div>
+      <div class="filters" role="group" aria-label="Filtrar videojuegos por género">
+        <button class="filter-pill selected" type="button" data-filter="Todos" aria-pressed="true">Todos</button>
+        <button class="filter-pill" type="button" data-filter="Acción" aria-pressed="false">Acción</button>
+        <button class="filter-pill" type="button" data-filter="Disparos" aria-pressed="false">Disparos</button>
+        <button class="filter-pill" type="button" data-filter="Ciencia ficción" aria-pressed="false">Ciencia ficción</button>
+        <button class="filter-pill" type="button" data-filter="Carreras" aria-pressed="false">Carreras</button>
+        <button class="filter-pill" type="button" data-filter="Terror" aria-pressed="false">Terror</button>
+        <button class="filter-pill" type="button" data-filter="Aventura" aria-pressed="false">Aventura</button>
+      </div>
+      <div id="counter" class="counter" role="status" aria-live="polite">6 videojuegos en el catálogo académico.</div>
+      <div class="cards" id="gameGrid">
+        <article class="game-card" data-id="1" data-genre="Acción" data-name="Sombras Eternas" data-description="Adéntrate en un reino de fantasía, descubre fortalezas ocultas y participa en combates épicos.">
+          <div class="game-image"><img src="assets/juego-1.webp" alt="Guerrero de fantasía frente a una ciudadela, videojuego Sombras Eternas" loading="lazy"><span class="genre">Acción</span><button class="favorite" type="button" aria-label="Guardar Sombras Eternas en mi lista" aria-pressed="false"><svg><use href="#ic-heart"></use></svg></button></div>
+          <div class="game-info"><h3>Sombras Eternas</h3><p>Un mundo de fantasía lleno de misterios y batallas épicas.</p><button type="button" class="open-game"><svg><use href="#ic-download"></use></svg> Ver juego</button></div>
+        </article>
+        <article class="game-card" data-id="2" data-genre="Disparos" data-name="Operación Horizonte" data-description="Una misión táctica con operaciones en equipo, mapas de combate y situaciones de estrategia.">
+          <div class="game-image"><img src="assets/juego-2.webp" alt="Soldado en un escenario táctico, videojuego Operación Horizonte" loading="lazy"><span class="genre">Disparos</span><button class="favorite" type="button" aria-label="Guardar Operación Horizonte en mi lista" aria-pressed="false"><svg><use href="#ic-heart"></use></svg></button></div>
+          <div class="game-info"><h3>Operación Horizonte</h3><p>Enfrenta misiones tácticas en escenarios de combate.</p><button type="button" class="open-game"><svg><use href="#ic-download"></use></svg> Ver juego</button></div>
+        </article>
+        <article class="game-card" data-id="3" data-genre="Ciencia ficción" data-name="Nexo Galáctico" data-description="Explora estaciones espaciales, planetas remotos y rutas interestelares en una expedición futurista.">
+          <div class="game-image"><img src="assets/juego-3.webp" alt="Nave espacial y astronauta frente a un planeta, videojuego Nexo Galáctico" loading="lazy"><span class="genre">Ciencia ficción</span><button class="favorite" type="button" aria-label="Guardar Nexo Galáctico en mi lista" aria-pressed="false"><svg><use href="#ic-heart"></use></svg></button></div>
+          <div class="game-info"><h3>Nexo Galáctico</h3><p>Explora nuevos mundos en una aventura espacial.</p><button type="button" class="open-game"><svg><use href="#ic-download"></use></svg> Ver juego</button></div>
+        </article>
+        <article class="game-card" data-id="4" data-genre="Carreras" data-name="Velocidad Extrema" data-description="Participa en competiciones urbanas nocturnas y supera desafíos en pistas iluminadas con neón.">
+          <div class="game-image"><img src="assets/juego-4.webp" alt="Auto deportivo en una ciudad con luces de neón, videojuego Velocidad Extrema" loading="lazy"><span class="genre">Carreras</span><button class="favorite" type="button" aria-label="Guardar Velocidad Extrema en mi lista" aria-pressed="false"><svg><use href="#ic-heart"></use></svg></button></div>
+          <div class="game-info"><h3>Velocidad Extrema</h3><p>Compite en carreras y conquista las mejores pistas.</p><button type="button" class="open-game"><svg><use href="#ic-download"></use></svg> Ver juego</button></div>
+        </article>
+        <article class="game-card" data-id="5" data-genre="Terror" data-name="La Mansión Olvidada" data-description="Investiga las habitaciones de una mansión abandonada y resuelve los enigmas de su pasado.">
+          <div class="game-image"><img src="assets/juego-5.webp" alt="Mansión misteriosa entre niebla, videojuego La Mansión Olvidada" loading="lazy"><span class="genre">Terror</span><button class="favorite" type="button" aria-label="Guardar La Mansión Olvidada en mi lista" aria-pressed="false"><svg><use href="#ic-heart"></use></svg></button></div>
+          <div class="game-info"><h3>La Mansión Olvidada</h3><p>Descubre secretos ocultos en una historia de terror.</p><button type="button" class="open-game"><svg><use href="#ic-download"></use></svg> Ver juego</button></div>
+        </article>
+        <article class="game-card" data-id="6" data-genre="Aventura" data-name="Tierras Lejanas" data-description="Recorre bosques y valles, encuentra ruinas antiguas y descubre civilizaciones perdidas.">
+          <div class="game-image"><img src="assets/juego-6.webp" alt="Explorador en un valle con cascadas, videojuego Tierras Lejanas" loading="lazy"><span class="genre">Aventura</span><button class="favorite" type="button" aria-label="Guardar Tierras Lejanas en mi lista" aria-pressed="false"><svg><use href="#ic-heart"></use></svg></button></div>
+          <div class="game-info"><h3>Tierras Lejanas</h3><p>Explora y descubre antiguas civilizaciones perdidas.</p><button type="button" class="open-game"><svg><use href="#ic-download"></use></svg> Ver juego</button></div>
+        </article>
+      </div>
+      <p class="empty" id="emptyMessage" hidden>No se encontraron juegos con ese criterio. Prueba otra búsqueda o elige «Todos».</p>
+    </section>
+
+    <section class="team-section" id="recomendados" aria-labelledby="recoTitle">
+      <div class="container">
+        <div class="section-head"><svg class="section-icon"><use href="#ic-star"></use></svg><h2 id="recoTitle">RECOMENDADOS DEL <span>GRUPO 5</span></h2><span class="rule"></span><a href="#equipo">Conoce nuestras elecciones <svg><use href="#ic-chevron-right"></use></svg></a></div>
+      </div>
+      <div class="recommend-bar">
+        <div class="container feature-row">
+          <div class="feature"><svg><use href="#ic-trophy"></use></svg><div><strong>Selección del equipo</strong><span>Videojuegos recomendados por el Grupo 5</span></div></div>
+          <div class="feature"><svg><use href="#ic-pad"></use></svg><div><strong>Varios géneros</strong><span>Acción, carreras, aventura y más</span></div></div>
+          <div class="feature"><svg><use href="#ic-star"></use></svg><div><strong>Catálogo de muestra</strong><span>Proyecto académico sin descargas reales</span></div></div>
+          <div class="feature"><svg><use href="#ic-users"></use></svg><div><strong>Creado por estudiantes</strong><span>Diseño web con HTML, CSS y JavaScript</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="equipo" aria-labelledby="teamTitle">
+      <div class="section-head"><svg class="section-icon"><use href="#ic-users"></use></svg><h2 id="teamTitle">INTEGRANTES DEL <span>GRUPO 5</span></h2><span class="rule"></span></div>
+      <p class="recommend-lead">Somos el Grupo 5 de Programación Web Avanzada de la UBE. Esta galería aplica HTML para estructurar el contenido, CSS para diseñarlo y JavaScript para controlar un carrusel de imágenes, búsquedas y filtros.</p>
+      <div class="repository-actions">
+        <a class="repository-action" href="https://github.com/wilmerjoselopezponce4-cloud/CLASE-PRACTICA-2-FISICA-2-GRUPO-5-" target="_blank" rel="noopener noreferrer" aria-label="Ver el repositorio de la Clase Práctica 2 del Grupo 5 en GitHub (se abre en una pestaña nueva)"><svg aria-hidden="true"><use href="#ic-external"></use></svg> Ver repositorio en GitHub</a>
+      </div>
+      <div class="members">
+        <div class="member"><div class="avatar">JT</div><b>Jorge Toapanta</b><span>Recomienda: Acción</span></div>
+        <div class="member"><div class="avatar">JD</div><b>Jhoely Davila</b><span>Recomienda: Aventura</span></div>
+        <div class="member"><div class="avatar">JC</div><b>Jhonatan Chavez</b><span>Recomienda: Ciencia ficción</span></div>
+        <div class="member"><div class="avatar">WA</div><b>Wilmer Adriano</b><span>Recomienda: Carreras</span></div>
+        <div class="member"><div class="avatar">WL</div><b>Wilmer Lopez</b><span>Recomienda: Terror</span></div>
+      </div>
+    </section>
+  </main>
+
+
+  <div class="modal" id="gameModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" id="modalClose" type="button" aria-label="Cerrar detalle"><svg><use href="#ic-close"></use></svg></button>
+      <img id="modalImage" src="assets/juego-1.webp" alt="Imagen del videojuego seleccionado">
+      <div class="modal-body"><h2 id="modalTitle">Videojuego</h2><p class="modal-genre" id="modalGenre"></p><p id="modalDescription"></p><p class="modal-note">Esta página es una práctica universitaria de diseño y JavaScript. Los videojuegos y botones se muestran como una demostración; no se incluyen instaladores ni enlaces de descarga.</p><button class="modal-action" type="button" id="modalOkay">Volver al catálogo</button></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    'use strict';
+    // Ejercicio 1: carrusel de imágenes con flechas anterior y siguiente.
+    // El JavaScript está incluido dentro del mismo archivo HTML.
+    const slides = [...document.querySelectorAll('.slide')];
+    const dots = [...document.querySelectorAll('[data-slide]')];
+    const titles = [
+      { html: 'VIVE <small>EL MUNDO</small><strong>GAMER</strong>', sub: 'DESCUBRE <b>·</b> EXPLORA <b>·</b> JUEGA <b>·</b> DISFRUTA' },
+      { html: 'EXPLORA <small>NUEVOS</small><strong>MUNDOS</strong>', sub: 'AVENTURA <b>·</b> ACCIÓN <b>·</b> MISTERIO <b>·</b> DIVERSIÓN' },
+      { html: 'ENCUENTRA <small>TU PRÓXIMA</small><strong>AVENTURA</strong>', sub: 'CONOCE <b>·</b> DESCUBRE <b>·</b> COMPARTE <b>·</b> JUEGA' },
+      { html: 'SOMBRAS <small>Y LEYENDAS</small><strong>ETERNAS</strong>', sub: 'ACCIÓN <b>·</b> FANTASÍA <b>·</b> AVENTURA' },
+      { html: 'MISIÓN <small>OPERACIÓN</small><strong>HORIZONTE</strong>', sub: 'ESTRATEGIA <b>·</b> EQUIPO <b>·</b> COMBATE' },
+      { html: 'VIAJA <small>POR EL NEXO</small><strong>GALÁCTICO</strong>', sub: 'EXPLORA <b>·</b> DESCUBRE <b>·</b> CONQUISTA' },
+      { html: 'VIVE <small>LA VELOCIDAD</small><strong>EXTREMA</strong>', sub: 'CARRERAS <b>·</b> ADRENALINA <b>·</b> CIUDAD' },
+      { html: 'ENTRA <small>EN LA MANSIÓN</small><strong>OLVIDADA</strong>', sub: 'MISTERIO <b>·</b> TERROR <b>·</b> AVENTURA' },
+      { html: 'DESCUBRE <small>TIERRAS</small><strong>LEJANAS</strong>', sub: 'NATURALEZA <b>·</b> EXPLORACIÓN <b>·</b> DESAFÍOS' }
+    ];
+    let currentSlide = 0;
+    let carouselTimer;
+    const hero = document.querySelector('.hero');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function showSlide(index) {
+      currentSlide = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        const active = i === currentSlide;
+        slide.classList.toggle('active', active);
+        slide.setAttribute('aria-hidden', String(!active));
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('current', i === currentSlide);
+        dot.setAttribute('aria-current', String(i === currentSlide));
+      });
+      document.getElementById('slideTitle').innerHTML = titles[currentSlide].html;
+      document.getElementById('slideTagline').innerHTML = titles[currentSlide].sub;
+    }
+    function startCarousel() {
+      clearInterval(carouselTimer);
+      if (!prefersReducedMotion && !document.hidden) {
+        carouselTimer = setInterval(() => showSlide(currentSlide + 1), 7500);
+      }
+    }
+    function changeSlide(delta) { showSlide(currentSlide + delta); startCarousel(); }
+    document.getElementById('prevSlide').addEventListener('click', () => changeSlide(-1));
+    document.getElementById('nextSlide').addEventListener('click', () => changeSlide(1));
+    dots.forEach(dot => dot.addEventListener('click', () => {
+      showSlide(Number(dot.dataset.slide)); startCarousel();
+    }));
+    hero.addEventListener('mouseenter', () => clearInterval(carouselTimer));
+    hero.addEventListener('mouseleave', startCarousel);
+    hero.addEventListener('focusin', () => clearInterval(carouselTimer));
+    hero.addEventListener('focusout', e => { if (!hero.contains(e.relatedTarget)) startCarousel(); });
+    document.addEventListener('visibilitychange', startCarousel);
+    showSlide(0); startCarousel();
+
+    // Categorías, búsqueda y tarjetas del catálogo de ejemplo.
+    const cards = [...document.querySelectorAll('.game-card')];
+    const searchInput = document.getElementById('searchInput');
+    const filterButtons = [...document.querySelectorAll('.filter-pill')];
+    let activeFilter = 'Todos';
+    let favoritesOnly = false;
+    let favoriteIds = [];
+    try { favoriteIds = JSON.parse(localStorage.getItem('grupo5-favoritos') || '[]'); if (!Array.isArray(favoriteIds)) favoriteIds=[]; } catch (_) { favoriteIds=[]; }
+    const toast = document.getElementById('toast');
+    let toastTimer;
+    function toastMessage(message) {
+      toast.textContent=message; toast.classList.add('shown');
+      clearTimeout(toastTimer); toastTimer=setTimeout(() => toast.classList.remove('shown'), 3100);
+    }
+    function applyFilters() {
+      const query = searchInput.value.trim().toLocaleLowerCase('es');
+      let visible=0;
+      cards.forEach(card => {
+        const genreMatch = activeFilter === 'Todos' || card.dataset.genre === activeFilter;
+        const searchMatch = [card.dataset.name,card.dataset.genre,card.dataset.description].join(' ').toLocaleLowerCase('es').includes(query);
+        const favoriteMatch = !favoritesOnly || favoriteIds.includes(card.dataset.id);
+        card.hidden = !(genreMatch && searchMatch && favoriteMatch);
+        if (!card.hidden) visible++;
+      });
+      const suffix = favoritesOnly ? ' de tu lista de favoritos' : ' en el catálogo académico';
+      document.getElementById('counter').textContent = `${visible} ${visible === 1 ? 'videojuego' : 'videojuegos'}${suffix}.`;
+      document.getElementById('emptyMessage').hidden = visible !== 0;
+      filterButtons.forEach(btn => {
+        const selected = btn.dataset.filter === activeFilter;
+        btn.classList.toggle('selected',selected);
+        btn.setAttribute('aria-pressed',String(selected));
+      });
+    }
+    function setFilter(value) {
+      activeFilter=value; favoritesOnly=false;applyFilters();
+      closeDropdown();document.getElementById('juegos').scrollIntoView({behavior:prefersReducedMotion?'auto':'smooth'});
+    }
+    filterButtons.forEach(btn=>btn.addEventListener('click',()=>setFilter(btn.dataset.filter)));
+    document.querySelectorAll('#dropdown [data-filter]').forEach(btn=>btn.addEventListener('click',()=>setFilter(btn.dataset.filter)));
+    document.getElementById('searchForm').addEventListener('submit',e=>{
+      e.preventDefault();applyFilters();document.getElementById('juegos').scrollIntoView({behavior:prefersReducedMotion?'auto':'smooth'});
+    });
+    searchInput.addEventListener('input',applyFilters);
+    document.getElementById('seeAll').addEventListener('click',()=>{searchInput.value='';setFilter('Todos');});
+    document.getElementById('goFavorites').addEventListener('click',()=>{
+      activeFilter='Todos';searchInput.value='';favoritesOnly=true;applyFilters();
+    });
+    const menu=document.getElementById('categoryMenu'), dropdown=document.getElementById('dropdown');
+    function closeDropdown() {dropdown.classList.remove('open');menu.setAttribute('aria-expanded','false');}
+    menu.addEventListener('click',()=>{
+      const open=!dropdown.classList.contains('open');dropdown.classList.toggle('open',open);menu.setAttribute('aria-expanded',String(open));
+    });
+    document.addEventListener('click',e=>{if(!e.target.closest('.dropdown-wrap'))closeDropdown();});
+    const mobileToggle=document.getElementById('mobileToggle'),primaryLinks=document.getElementById('primaryLinks');
+    mobileToggle.addEventListener('click',()=>{
+      const open=!primaryLinks.classList.contains('open');primaryLinks.classList.toggle('open',open);
+      mobileToggle.setAttribute('aria-expanded',String(open));mobileToggle.setAttribute('aria-label',open?'Cerrar navegación':'Abrir navegación');
+    });
+    primaryLinks.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{primaryLinks.classList.remove('open');mobileToggle.setAttribute('aria-expanded','false');}));
+    cards.forEach(card=>{
+      const favoriteButton=card.querySelector('.favorite');
+      const updateFavorite=()=>favoriteButton.setAttribute('aria-pressed',String(favoriteIds.includes(card.dataset.id)));
+      updateFavorite();
+      favoriteButton.addEventListener('click',()=>{
+        const id=card.dataset.id;
+        if(favoriteIds.includes(id))favoriteIds=favoriteIds.filter(item=>item!==id);
+        else favoriteIds.push(id);
+        try{localStorage.setItem('grupo5-favoritos',JSON.stringify(favoriteIds));}catch(_){}
+        updateFavorite();applyFilters();toastMessage(favoriteIds.includes(id)?'Juego agregado a Mi lista.':'Juego eliminado de Mi lista.');
+      });
+      card.querySelector('.open-game').addEventListener('click',()=>openGame(card));
+    });
+    // Ventana de información: proyecto demostrativo, sin descargas reales.
+    const modal=document.getElementById('gameModal');
+    let lastFocusedElement=null;
+    function openGame(card){
+      lastFocusedElement=document.activeElement;
+      document.getElementById('modalTitle').textContent=card.dataset.name;
+      document.getElementById('modalGenre').textContent='Género: '+card.dataset.genre;
+      document.getElementById('modalDescription').textContent=card.dataset.description;
+      const thumb=card.querySelector('img');
+      document.getElementById('modalImage').src=thumb.getAttribute('src');
+      document.getElementById('modalImage').alt=thumb.alt;
+      modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+      document.getElementById('modalClose').focus();
+    }
+    function closeGame(){
+      modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';
+      if(lastFocusedElement && document.contains(lastFocusedElement))lastFocusedElement.focus();
+    }
+    document.getElementById('modalClose').addEventListener('click',closeGame);
+    document.getElementById('modalOkay').addEventListener('click',closeGame);
+    modal.addEventListener('click',e=>{if(e.target===modal)closeGame();});
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape'){if(modal.classList.contains('open'))closeGame();closeDropdown();}
+      if(e.key==='ArrowRight' && !modal.classList.contains('open') && ['INPUT','TEXTAREA'].includes(document.activeElement.tagName)===false && document.activeElement.closest('.hero'))changeSlide(1);
+      if(e.key==='ArrowLeft' && !modal.classList.contains('open') && ['INPUT','TEXTAREA'].includes(document.activeElement.tagName)===false && document.activeElement.closest('.hero'))changeSlide(-1);
+    });
+    applyFilters();
+  </script>
+</body>
+</html>
